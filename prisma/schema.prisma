@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+  DOCTOR
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+model User {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String   @unique
+  password   String
+  role       Role?    @default(USER)
+  status     String?  @default("active")
+  isApproved Boolean? @default(false)
+}
+
+type AddressHistory {
+  address   String
+  startDate DateTime
+  endDate   DateTime?
+  isCurrent Boolean
+}
+
+type WorkHistory {
+  hospital  String
+  position  String
+  startDate DateTime
+  endDate   DateTime?
+  isCurrent Boolean
+
+}
+
+type Qualification {
+  name String
+  year DateTime
+
+}
+
+type Award {
+  name        String
+  year        DateTime
+  institution String
+}
+
+model Doctor {
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  age            Int?
+  phone          String
+  image          String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime?
+  specialization String
+  addressHistory AddressHistory[]
+  workHistory    WorkHistory[]
+  qualification  Qualification[]
+  award          Award[]
+  userId         String           @db.ObjectId
+}

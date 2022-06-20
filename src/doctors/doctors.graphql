@@ -1,0 +1,62 @@
+scalar DateTime
+
+type AddressHistory {
+  address: String
+  startDate: DateTime
+  endDate: DateTime
+  isCurrent: Boolean
+}
+
+type WorkHistory {
+  hospital: String
+  position: String
+  startDate: DateTime
+  endDate: DateTime
+  isCurrent: Boolean
+}
+
+type Qualification {
+  name: String
+  year: DateTime
+  institution: String
+}
+
+type Award {
+  name: String
+  year: DateTime
+  institution: String
+}
+
+type Doctor {
+  age: Int
+  phone: String
+  email: String
+  image: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  specialization: String
+  addressHistory: [AddressHistory]
+  workHistory: [WorkHistory]
+  qualifications: [Qualification]
+  awards: [Award]
+}
+
+input CreateDoctorInput {
+  # Example field (placeholder)
+  exampleField: Int
+}
+
+input UpdateDoctorInput {
+  id: Int!
+}
+
+type Query {
+  doctors: [Doctor]!
+  doctor(id: Int!): Doctor
+}
+
+type Mutation {
+  createDoctor(createDoctorInput: CreateDoctorInput!): Doctor!
+  updateDoctor(updateDoctorInput: UpdateDoctorInput!): Doctor!
+  removeDoctor(id: Int!): Doctor
+}
